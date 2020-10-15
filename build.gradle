@@ -31,6 +31,8 @@ repositories {
 }
 
 dependencies {
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("de.alpharogroup:silly-io:$sillyIoVersion")
     testImplementation("de.alpharogroup:randomizer-core:$randomizerVersion")
     testImplementation("de.alpharogroup:crypt-data:$cryptDataVersion")
