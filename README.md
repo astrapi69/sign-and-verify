@@ -34,7 +34,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- sign-and-verify version -->
-		<sign-and-verify.version>1.3</sign-and-verify.version>
+		<sign-and-verify.version>1</sign-and-verify.version>
 			...
 	</properties>
 			...
@@ -57,12 +57,12 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    sillyMathVersion = "1.3"
+    signAndVerifyVersion = "1"
 			...
 }
 dependencies {
 			...
-compile("de.alpharogroup:sign-and-verify:$sillyMathVersion")
+implementation("de.alpharogroup:sign-and-verify:$signAndVerifyVersion")
 			...
 }
 ```
