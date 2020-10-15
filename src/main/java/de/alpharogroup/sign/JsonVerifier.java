@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.sign;
 
+import com.google.gson.Gson;
 import de.alpharogroup.io.Serializer;
 import de.alpharogroup.throwable.RuntimeExceptionDecorator;
 
@@ -35,10 +36,10 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * The class {@link ObjectVerifier} provides an algorithm  for java serializable objects with given
+ * The class {@link JsonVerifier} provides an algorithm  for java serializable objects with given
  * signed string arrays
  */
-public final class ObjectVerifier<T extends Serializable>
+public final class JsonVerifier<T>
 {
 
 	/**
@@ -51,20 +52,24 @@ public final class ObjectVerifier<T extends Serializable>
 	 */
 	private final VerifyBean verifyBean;
 
+	private final Gson gson;
+
 	/**
-	 * Instantiates a new {@link ObjectVerifier} object
+	 * Instantiates a new {@link JsonVerifier} object
 	 *
 	 * @param verifyBean The {@link VerifyBean} object holds the model data for verifying
 	 */
-	public ObjectVerifier(VerifyBean verifyBean)
+	public JsonVerifier(VerifyBean verifyBean, Gson gson)
 	{
 		Objects.requireNonNull(verifyBean);
 		Objects.requireNonNull(verifyBean.getSignatureAlgorithm());
+		Objects.requireNonNull(gson);
 		if (verifyBean.getPublicKey() == null && verifyBean.getCertificate() == null)
 		{
 			throw new IllegalArgumentException("Please provide a public key or certificate");
 		}
 		this.verifyBean = verifyBean;
+		this.gson = gson;
 		try
 		{
 			this.signature = Signature.getInstance(this.verifyBean.getSignatureAlgorithm());
@@ -84,10 +89,10 @@ public final class ObjectVerifier<T extends Serializable>
 	}
 
 	/**
-	 * Verify the given serializable object with the given signed encoded signature
+	 * Verify the given byte array with the given signed byte array
 	 *
 	 * @param object the object to verify
-	 * @param signedBytes   the encoded signature
+	 * @param signedBytes   the signed byte array
 	 * @return true, if successful otherwise false
 	 */
 	public synchronized boolean verify(T object, String signedBytes)
@@ -100,36 +105,36 @@ public final class ObjectVerifier<T extends Serializable>
 	}
 
 	/**
-	 * Verify the given serializable object with the given signed encoded signature with the certificate of the
+	 * Verify the given byte array with the given signed byte array with the certificate of the
 	 * verifyBean and the appropriate algorithms.
 	 *
 	 * @param object the object to verify
-	 * @param signedBytes   the encoded signature
+	 * @param signedBytes   the signed byte array
 	 * @return true, if successful otherwise false
 	 */
 	private synchronized boolean verifyWithCertificate(T object, String signedBytes)
 	{
 		return RuntimeExceptionDecorator.decorate(() -> {
 			signature.initVerify(verifyBean.getCertificate());
-			signature.update(Serializer.toByteArray(object));
+			signature.update(Serializer.toByteArray(gson.toJson(object, object.getClass())));
 			byte[] signedBytesBytes = Base64.getDecoder().decode(signedBytes);
 			return signature.verify(signedBytesBytes);
 		});
 	}
 
 	/**
-	 * Verify the given serializable object with the given signed encoded signature with the public key of the
+	 * Verify the given byte array with the given signed byte array with the public key of the
 	 * verifyBean and the appropriate algorithms.
 	 *
 	 * @param object the object to verify
-	 * @param signedBytes   the encoded signature
+	 * @param signedBytes   the signed byte array
 	 * @return true, if successful otherwise false
 	 */
 	private synchronized boolean verifyWithPublicKey(T object, String signedBytes)
 	{
 		return RuntimeExceptionDecorator.decorate(() -> {
 			signature.initVerify(verifyBean.getPublicKey());
-			signature.update(Serializer.toByteArray(object));
+			signature.update(Serializer.toByteArray(gson.toJson(object, object.getClass())));
 			byte[] signedBytesBytes = Base64.getDecoder().decode(signedBytes);
 			return signature.verify(signedBytesBytes);
 		});

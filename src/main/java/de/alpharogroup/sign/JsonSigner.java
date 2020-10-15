@@ -24,39 +24,46 @@
  */
 package de.alpharogroup.sign;
 
+import com.google.gson.Gson;
 import de.alpharogroup.io.Serializer;
 
 import java.io.Serializable;
 import java.util.Base64;
+import java.util.Objects;
 
 /**
- * The class {@link ObjectSigner} provide sign algorithm for java serializable objects
+ * The class {@link JsonSigner} provide sign algorithm for java serializable objects
  */
-public final class ObjectSigner<T extends Serializable>
+public final class JsonSigner<T>
 {
 
 	/* the signer for sign byte arrays. */
-	private Signer signer;
+	private final Signer signer;
+
+	private final Gson gson;
 
 	/**
-	 * Instantiates a new {@link ObjectSigner} object
+	 * Instantiates a new {@link JsonSigner} object
 	 *
 	 * @param signatureBean the signature bean
 	 */
-	public ObjectSigner(SignatureBean signatureBean)
+	public JsonSigner(SignatureBean signatureBean, Gson gson)
 	{
+		Objects.requireNonNull(gson);
 		this.signer = new Signer(signatureBean);
+		this.gson = gson;
 	}
 
 	/**
-	 * Sign the given serializable object with the given private key and the appropriate algorithms.
+	 * Sign the given byte array with the given private key and the appropriate algorithms.
 	 *
 	 * @param object the object to sign
-	 * @return the encoded signature
+	 * @return the signed byte array
 	 */
 	public synchronized String sign(final T object)
 	{
-		byte[] signedBytes = this.signer.sign(Serializer.toByteArray(object));
+		Objects.requireNonNull(object);
+		byte[] signedBytes = this.signer.sign(Serializer.toByteArray(gson.toJson(object, object.getClass())));
 		String encoded = Base64.getEncoder().encodeToString(signedBytes);
 		return encoded;
 	}

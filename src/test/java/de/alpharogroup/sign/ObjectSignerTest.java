@@ -31,6 +31,7 @@ import de.alpharogroup.test.objects.Person;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.Serializable;
 import java.security.PrivateKey;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,7 +43,7 @@ public class ObjectSignerTest
 {
 
 	/**
-	 * Test method for {@link Signer#sign(byte[])}
+	 * Test method for {@link ObjectSigner#sign(Serializable)} 
 	 *
 	 * @throws Exception
 	 *             is thrown if any security exception occured
