@@ -31,11 +31,13 @@ repositories {
 }
 
 dependencies {
+    implementation("de.alpharogroup:silly-io:$sillyIoVersion")
     testImplementation("de.alpharogroup:randomizer-core:$randomizerVersion")
     testImplementation("de.alpharogroup:crypt-data:$cryptDataVersion")
     testImplementation("de.alpharogroup:file-worker:$fileWorkerVersion")
     testImplementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")
     testImplementation("de.alpharogroup:test-objects:$testObjectsVersion")
+    testImplementation("de.alpharogroup:jobj-contract-verifier:$jobjContractVerifierVersion")
     testImplementation("org.meanbean:meanbean:$meanbeanVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")

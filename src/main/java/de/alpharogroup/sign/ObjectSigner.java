@@ -1,14 +1,13 @@
 package de.alpharogroup.sign;
 
-import java.io.ByteArrayOutputStream;
+import de.alpharogroup.io.Serializer;
+
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.util.Base64;
-import java.util.Objects;
 
 /**
  * The class {@link ObjectSigner} provide sign algorithm for java serializable objects
@@ -21,12 +20,9 @@ public final class ObjectSigner<T extends Serializable>
 	/**
 	 * Instantiates a new {@link ObjectSigner} object
 	 *
-	 * @param signatureBean
-	 *            the signature bean
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @param signatureBean the signature bean
+	 * @throws InvalidKeyException      is thrown if initialization of the cipher object fails
+	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails.
 	 */
 	public ObjectSigner(SignatureBean signatureBean)
 		throws NoSuchAlgorithmException, InvalidKeyException
@@ -37,14 +33,11 @@ public final class ObjectSigner<T extends Serializable>
 	/**
 	 * Sign the given byte array with the given private key and the appropriate algorithms.
 	 *
-	 * @param object
-	 *            the object to sign
+	 * @param object the object to sign
 	 * @return the signed byte array
-	 * @throws SignatureException
-	 *             is thrown if the signature object is not initialized properly or if this
-	 *             signature algorithm is unable to process the input data provided
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws SignatureException is thrown if the signature object is not initialized properly or if this
+	 *                            signature algorithm is unable to process the input data provided
+	 * @throws IOException        Signals that an I/O exception has occurred.
 	 */
 	public synchronized String sign(final T object) throws SignatureException, IOException
 	{

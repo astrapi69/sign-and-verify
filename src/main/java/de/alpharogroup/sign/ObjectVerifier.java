@@ -1,5 +1,7 @@
 package de.alpharogroup.sign;
 
+import de.alpharogroup.io.Serializer;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.InvalidKeyException;
@@ -10,8 +12,8 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * The class {@link ObjectVerifier} provides an algorithm  for java serializable objects with given signed string
- * arrays
+ * The class {@link ObjectVerifier} provides an algorithm  for java serializable objects with given
+ * signed string arrays
  */
 public final class ObjectVerifier<T extends Serializable>
 {
