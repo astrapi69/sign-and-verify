@@ -1,9 +1,10 @@
 package de.alpharogroup.sign;
 
+import de.alpharogroup.throwable.RuntimeExceptionDecorator;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
-import java.security.SignatureException;
 import java.util.Objects;
 
 /**
@@ -12,47 +13,52 @@ import java.util.Objects;
 public final class Signer
 {
 
-	/** The {@link Signature} object for signing */
+	/**
+	 * The {@link Signature} object for signing
+	 */
 	private final Signature signature;
 
-	/** The {@link SignatureBean} object holds the model data for signing */
+	/**
+	 * The {@link SignatureBean} object holds the model data for signing
+	 */
 	private final SignatureBean signatureBean;
 
 	/**
 	 * Instantiates a new {@link Signer} object
 	 *
-	 * @param signatureBean
-	 *            the signature bean
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @param signatureBean the signature bean
+	 * @throws InvalidKeyException      is thrown if initialization of the cipher object fails
+	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails.
 	 */
-	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException, InvalidKeyException
+	public Signer(SignatureBean signatureBean)
 	{
 		Objects.requireNonNull(signatureBean);
 		Objects.requireNonNull(signatureBean.getPrivateKey());
 		Objects.requireNonNull(signatureBean.getSignatureAlgorithm());
 		this.signatureBean = signatureBean;
-		this.signature = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
-		this.signature.initSign(this.signatureBean.getPrivateKey());
+		try
+		{
+			this.signature = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
+			this.signature.initSign(this.signatureBean.getPrivateKey());
+		}
+		catch (InvalidKeyException | NoSuchAlgorithmException exception)
+		{
+			throw new RuntimeException(exception);
+		}
 	}
 
 	/**
 	 * Sign the given byte array with the given private key and the appropriate algorithms.
 	 *
-	 * @param bytesToSign
-	 *            the bytes to sign
+	 * @param bytesToSign the bytes to sign
 	 * @return the signed byte array
-	 * @throws SignatureException
-	 *             is thrown if the signature object is not initialized properly or if this
-	 *             signature algorithm is unable to process the input data provided
 	 */
 	public synchronized byte[] sign(byte[] bytesToSign)
-		throws SignatureException
 	{
-		signature.update(bytesToSign);
-		return signature.sign();
+		return RuntimeExceptionDecorator.decorate(() -> {
+			signature.update(bytesToSign);
+			return signature.sign();
+		});
 	}
 
 }

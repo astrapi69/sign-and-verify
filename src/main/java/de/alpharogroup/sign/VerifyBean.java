@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 
