@@ -11,6 +11,7 @@ ADDED:
 CHANGED:
 
 - update of gradle to new version 6.7
+- update of test dependency file-worker to new version 5.7
 - javadoc extended and optimized
 
 Version 1
