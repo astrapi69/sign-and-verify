@@ -4,6 +4,10 @@
 Version 1.1-SNAPSHOT
 -------------
 
+ADDED: 
+
+- added usage area to the README.md file
+
 CHANGED:
 
 - update of gradle to new version 6.7

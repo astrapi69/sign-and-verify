@@ -1,8 +1,8 @@
 /**
  * The MIT License
- *
+ * <p>
  * Copyright (C) 2015 Asterios Raptis
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -24,14 +24,11 @@
  */
 package de.alpharogroup.sign;
 
-import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.verifier.ContractVerifier;
 import de.alpharogroup.file.search.PathFinder;
 import org.junit.jupiter.api.Test;
-import org.meanbean.test.BeanTester;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,16 +37,18 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.spec.InvalidKeySpecException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * The unit test class for the class {@link SignatureBean}
+ */
 class VerifyBeanTest
 {
 
 	/**
 	 * Test method for creation of object {@link VerifyBean}
 	 */
-	@Test
-	public void testObjectCreation()
+	@Test public void testObjectCreation()
 		throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
 		IOException, CertificateEncodingException, InvalidKeyException, SignatureException
 	{

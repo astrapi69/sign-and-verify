@@ -12,20 +12,22 @@
 
 </div>
 
-Utility library that can sign and verify java objects
+Utility library that can sign and verify java objects.
 
 If you like this project put a ⭐ and donate
 
 ## License
 
-The source code comes under the liberal MIT License, making sign-and-verify great for all types of applications.
+The source code comes under the liberal MIT License, making sign-and-verify great for all types 
+of applications.
 
 ## Maven dependency
 
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~sign-and-verify~~~) for latest snapshots and releases.
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of sign-and-verify:
+Add the following maven dependency to your project `pom.xml` if you want to import the core 
+functionality of sign-and-verify:
 
 For development with jdk 1.8 use following version:
 
@@ -52,7 +54,8 @@ Than you can add the dependency to your dependencies:
 			
 ## gradle dependency
 
-You can first define the version in the ext section and add than the following gradle dependency to your project `build.gradle` if you want to import the core functionality of file-worker:
+You can first define the version in the ext section and add than the following gradle dependency 
+to your project `build.gradle` if you want to import the core functionality:
 
 ```
 ext {
@@ -67,7 +70,107 @@ implementation("de.alpharogroup:sign-and-verify:$signAndVerifyVersion")
 }
 ```
 
-If you develop above jdk 11 you can use sign-and-verify version 2.x and above.
+# Usage
+
+In some situation we have to create a digitale signature of objects, for check against unauthorized 
+manipulation by third-party.
+In this case the first step is to sign the specific object. For simple sign you can use the Signer
+class that provides one method for sign a byte array. But before you start signing and verifying 
+objects you need a KeyPair object and get the private key from it. As second, we need a signature 
+algorithm. As an alternative you can use a private key file and extract the private key from it.
+
+For that this library provides model classes that can encapsulate the needed objects. For the Signature
+we need to create a SignatureBean that can be given as argument to the contructor of the Signer 
+object that can then sign the given byte array as you can see in the following unit test.
+
+```
+public class SignerTest
+{
+
+	@Test
+	public void testSign() throws Exception
+	{
+		byte[] actual;
+		byte[] expected;
+		byte[] valueBytes;
+		String signatureAlgorithm;
+		Charset charset;
+		File publickeyDerDir;
+		File privatekeyDerFile;
+		PrivateKey privateKey;
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "/der");
+		privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		charset = StandardCharsets.UTF_8;
+		valueBytes = "foo".getBytes(charset);
+
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
+
+		SignatureBean bean = SignatureBean.builder().privateKey(privateKey)
+			.signatureAlgorithm(signatureAlgorithm).build();
+		Signer signer = new Signer(bean);
+		actual = signer.sign(valueBytes);
+		expected = TestObjectFactory.newTestSignByteArray();
+		assertArrayEquals(actual, expected);
+    }
+}
+```
+
+When the object have a digitale signature, and the appropriate field have been set you can then 
+afterwards verify the object this object. To do the verification process you can use the Verifier
+class that have one verify method with the bytes to verify and the signature as byte array to 
+verify against.
+
+```
+public class VerifierTest
+{
+
+	@Test
+	public void testVerifyWithCertificate() throws Exception
+	{
+		boolean actual;
+		boolean expected;
+		byte[] valueBytes;
+		String signatureAlgorithm;
+		Charset charset;
+		File publickeyDerDir;
+		File publickeyDerFile;
+		File privatekeyDerFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		Certificate certificate;
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "/der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
+		privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
+
+		charset = StandardCharsets.UTF_8;
+		valueBytes = "foo".getBytes(charset);
+
+		certificate = TestObjectFactory.newCertificateForTests(publicKey, privateKey,
+			signatureAlgorithm);
+
+		VerifyBean verifyBean = VerifyBean.builder().certificate(certificate)
+			.signatureAlgorithm(signatureAlgorithm).build();
+
+		Verifier verifier = new Verifier(verifyBean);
+		actual = verifier.verify(valueBytes, TestObjectFactory.newTestSignByteArray());
+		expected = true;
+		assertTrue(actual);
+		assertEquals(actual, expected);
+	}
+	
+}
+```
+
+For more examples you can have a look at the unit test classes for JsonSigner, JsonVerifier,
+ObjectSigner and ObjectVerifier.
 
 ## Semantic Versioning
 
