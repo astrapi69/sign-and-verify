@@ -108,16 +108,5 @@ public class SignerTest
 			(byte)58, (byte)47, (byte)20, (byte)19, (byte)-97, (byte)-107, (byte)-7, (byte)97,
 			(byte)-102, (byte)10, (byte)105);
 		assertArrayEquals(actual, expected);
-		long start = System.currentTimeMillis();
-		for (int i = 0; i < 100; i++)
-		{
-			actual = signer.sign(valueBytes);
-			assertArrayEquals(actual, expected);
-		}
-		long end = System.currentTimeMillis();
-		long duration = end - start;
-		System.out.println("duration in ms:" + duration);
-		assertTrue(duration < 500);
-
 	}
 }
