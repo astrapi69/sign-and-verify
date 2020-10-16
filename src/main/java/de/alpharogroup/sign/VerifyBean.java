@@ -34,6 +34,9 @@ import lombok.experimental.SuperBuilder;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 
+/**
+ * The class {@link VerifyBean} holds the model data for verifying java objects
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

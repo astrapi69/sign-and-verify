@@ -32,20 +32,23 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * The class {@link JsonSigner} provide sign algorithm for java serializable objects
+ * The class {@link JsonSigner} provide sign algorithm for all java objects. Uses internally json
+ * for serialization
  */
 public final class JsonSigner<T>
 {
 
-	/* the signer for sign byte arrays. */
+	/* the signer for sign byte arrays */
 	private final Signer signer;
 
+	/* the gson object for serialization */
 	private final Gson gson;
 
 	/**
 	 * Instantiates a new {@link JsonSigner} object
 	 *
 	 * @param signatureBean the signature bean
+	 * @param gson the gson for serialization
 	 */
 	public JsonSigner(SignatureBean signatureBean, Gson gson)
 	{
@@ -55,10 +58,10 @@ public final class JsonSigner<T>
 	}
 
 	/**
-	 * Sign the given byte array with the given private key and the appropriate algorithms.
+	 * Sign the given java object
 	 *
 	 * @param object the object to sign
-	 * @return the signed byte array
+	 * @return the encoded signature of the given java object
 	 */
 	public synchronized String sign(final T object)
 	{

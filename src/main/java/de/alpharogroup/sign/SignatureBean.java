@@ -33,6 +33,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.security.PrivateKey;
 
+/**
+ * The class {@link SignatureBean} holds the model data for sign java objects
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

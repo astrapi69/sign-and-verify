@@ -36,7 +36,7 @@ public final class ObjectSigner<T extends Serializable>
 {
 
 	/* the signer for sign byte arrays. */
-	private Signer signer;
+	private final Signer signer;
 
 	/**
 	 * Instantiates a new {@link ObjectSigner} object
@@ -49,7 +49,7 @@ public final class ObjectSigner<T extends Serializable>
 	}
 
 	/**
-	 * Sign the given serializable object with the given private key and the appropriate algorithms.
+	 * Sign the given serializable object
 	 *
 	 * @param object the object to sign
 	 * @return the encoded signature

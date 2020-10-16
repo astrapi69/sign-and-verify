@@ -36,22 +36,20 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * The class {@link JsonVerifier} provides an algorithm  for java serializable objects with given
- * signed string arrays
+ * The class {@link JsonVerifier} provides an algorithm for verifying all java objects with given
+ * encoded signature. Uses internally json for serialization
  */
 public final class JsonVerifier<T>
 {
 
 	/**
-	 * The {@link Signature} object for the verification
+	 * The {@link Verifier} object for the verification
 	 */
-	private final Signature signature;
+	private final Verifier verifier;
 
 	/**
-	 * The {@link VerifyBean} object holds the model data for the verification
+	 * the gson object for serialization
 	 */
-	private final VerifyBean verifyBean;
-
 	private final Gson gson;
 
 	/**
@@ -61,31 +59,9 @@ public final class JsonVerifier<T>
 	 */
 	public JsonVerifier(VerifyBean verifyBean, Gson gson)
 	{
-		Objects.requireNonNull(verifyBean);
-		Objects.requireNonNull(verifyBean.getSignatureAlgorithm());
 		Objects.requireNonNull(gson);
-		if (verifyBean.getPublicKey() == null && verifyBean.getCertificate() == null)
-		{
-			throw new IllegalArgumentException("Please provide a public key or certificate");
-		}
-		this.verifyBean = verifyBean;
+		this.verifier = new Verifier(verifyBean);
 		this.gson = gson;
-		try
-		{
-			this.signature = Signature.getInstance(this.verifyBean.getSignatureAlgorithm());
-			if (verifyBean.getPublicKey() != null)
-			{
-				signature.initVerify(this.verifyBean.getPublicKey());
-			}
-			else
-			{
-				signature.initVerify(this.verifyBean.getCertificate());
-			}
-		}
-		catch (InvalidKeyException | NoSuchAlgorithmException exception)
-		{
-			throw new RuntimeException(exception);
-		}
 	}
 
 	/**
@@ -97,47 +73,8 @@ public final class JsonVerifier<T>
 	 */
 	public synchronized boolean verify(T object, String signedBytes)
 	{
-		if (verifyBean.getPublicKey() != null)
-		{
-			return verifyWithPublicKey(object, signedBytes);
-		}
-		return verifyWithCertificate(object, signedBytes);
-	}
-
-	/**
-	 * Verify the given byte array with the given signed byte array with the certificate of the
-	 * verifyBean and the appropriate algorithms.
-	 *
-	 * @param object the object to verify
-	 * @param signedBytes   the signed byte array
-	 * @return true, if successful otherwise false
-	 */
-	private synchronized boolean verifyWithCertificate(T object, String signedBytes)
-	{
-		return RuntimeExceptionDecorator.decorate(() -> {
-			signature.initVerify(verifyBean.getCertificate());
-			signature.update(Serializer.toByteArray(gson.toJson(object, object.getClass())));
-			byte[] signedBytesBytes = Base64.getDecoder().decode(signedBytes);
-			return signature.verify(signedBytesBytes);
-		});
-	}
-
-	/**
-	 * Verify the given byte array with the given signed byte array with the public key of the
-	 * verifyBean and the appropriate algorithms.
-	 *
-	 * @param object the object to verify
-	 * @param signedBytes   the signed byte array
-	 * @return true, if successful otherwise false
-	 */
-	private synchronized boolean verifyWithPublicKey(T object, String signedBytes)
-	{
-		return RuntimeExceptionDecorator.decorate(() -> {
-			signature.initVerify(verifyBean.getPublicKey());
-			signature.update(Serializer.toByteArray(gson.toJson(object, object.getClass())));
-			byte[] signedBytesBytes = Base64.getDecoder().decode(signedBytes);
-			return signature.verify(signedBytesBytes);
-		});
+		return this.verifier.verify(Serializer.toByteArray(gson.toJson(object, object.getClass())),
+			Base64.getDecoder().decode(signedBytes));
 	}
 
 }

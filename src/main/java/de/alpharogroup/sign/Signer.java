@@ -51,8 +51,6 @@ public final class Signer
 	 * Instantiates a new {@link Signer} object
 	 *
 	 * @param signatureBean the signature bean
-	 * @throws InvalidKeyException      is thrown if initialization of the cipher object fails
-	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails.
 	 */
 	public Signer(SignatureBean signatureBean)
 	{
@@ -72,7 +70,7 @@ public final class Signer
 	}
 
 	/**
-	 * Sign the given byte array with the given private key and the appropriate algorithms.
+	 * Sign the given byte array with the given private key and the appropriate algorithms
 	 *
 	 * @param bytesToSign the bytes to sign
 	 * @return the signed byte array
