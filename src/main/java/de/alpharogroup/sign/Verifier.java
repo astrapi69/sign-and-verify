@@ -81,19 +81,19 @@ public final class Verifier
 	}
 
 	/**
-	 * Verify the given byte array with the given signed byte array
+	 * Verify the given byte array with the given signature
 	 *
 	 * @param bytesToVerify the bytes to verify
-	 * @param signedBytes   the signed byte array
+	 * @param signature   the signature as byte array to verify against
 	 * @return true, if successful otherwise false
 	 */
-	public synchronized boolean verify(byte[] bytesToVerify, byte[] signedBytes)
+	public synchronized boolean verify(byte[] bytesToVerify, byte[] signature)
 	{
 		if (verifyBean.getPublicKey() != null)
 		{
-			return verifyWithPublicKey(bytesToVerify, signedBytes);
+			return verifyWithPublicKey(bytesToVerify, signature);
 		}
-		return verifyWithCertificate(bytesToVerify, signedBytes);
+		return verifyWithCertificate(bytesToVerify, signature);
 	}
 
 	/**
@@ -101,15 +101,15 @@ public final class Verifier
 	 * verifyBean and the appropriate algorithms.
 	 *
 	 * @param bytesToVerify the bytes to verify
-	 * @param signedBytes   the signed byte array
+	 * @param signature   the signature as byte array to verify against
 	 * @return true, if successful otherwise false
 	 */
-	private synchronized boolean verifyWithCertificate(byte[] bytesToVerify, byte[] signedBytes)
+	private synchronized boolean verifyWithCertificate(byte[] bytesToVerify, byte[] signature)
 	{
 		return RuntimeExceptionDecorator.decorate(() -> {
-			signature.initVerify(verifyBean.getCertificate());
-			signature.update(bytesToVerify);
-			return signature.verify(signedBytes);
+			this.signature.initVerify(verifyBean.getCertificate());
+			this.signature.update(bytesToVerify);
+			return this.signature.verify(signature);
 		});
 	}
 
@@ -118,15 +118,15 @@ public final class Verifier
 	 * verifyBean and the appropriate algorithms.
 	 *
 	 * @param bytesToVerify the bytes to verify
-	 * @param signedBytes   the signed byte array
+	 * @param signature   the signature as byte array to verify against
 	 * @return true, if successful otherwise false
 	 */
-	private synchronized boolean verifyWithPublicKey(byte[] bytesToVerify, byte[] signedBytes)
+	private synchronized boolean verifyWithPublicKey(byte[] bytesToVerify, byte[] signature)
 	{
 		return RuntimeExceptionDecorator.decorate(() -> {
-			signature.initVerify(verifyBean.getPublicKey());
-			signature.update(bytesToVerify);
-			return signature.verify(signedBytes);
+			this.signature.initVerify(verifyBean.getPublicKey());
+			this.signature.update(bytesToVerify);
+			return this.signature.verify(signature);
 		});
 	}
 

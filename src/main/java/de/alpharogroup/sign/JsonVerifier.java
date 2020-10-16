@@ -48,7 +48,7 @@ public final class JsonVerifier<T>
 	private final Verifier verifier;
 
 	/**
-	 * the gson object for serialization
+	 * The {@link Gson} object for serialization
 	 */
 	private final Gson gson;
 
@@ -56,6 +56,7 @@ public final class JsonVerifier<T>
 	 * Instantiates a new {@link JsonVerifier} object
 	 *
 	 * @param verifyBean The {@link VerifyBean} object holds the model data for verifying
+	 * @param gson The {@link Gson} object for serialization
 	 */
 	public JsonVerifier(VerifyBean verifyBean, Gson gson)
 	{
@@ -68,13 +69,13 @@ public final class JsonVerifier<T>
 	 * Verify the given byte array with the given signed byte array
 	 *
 	 * @param object the object to verify
-	 * @param signedBytes   the signed byte array
+	 * @param signature   the signature to verify against
 	 * @return true, if successful otherwise false
 	 */
-	public synchronized boolean verify(T object, String signedBytes)
+	public synchronized boolean verify(T object, String signature)
 	{
 		return this.verifier.verify(Serializer.toByteArray(gson.toJson(object, object.getClass())),
-			Base64.getDecoder().decode(signedBytes));
+			Base64.getDecoder().decode(signature));
 	}
 
 }

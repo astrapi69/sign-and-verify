@@ -35,7 +35,7 @@ import java.util.Base64;
 public final class ObjectSigner<T extends Serializable>
 {
 
-	/* the signer for sign byte arrays. */
+	/* the {@link Signer} object for sign byte arrays */
 	private final Signer signer;
 
 	/**

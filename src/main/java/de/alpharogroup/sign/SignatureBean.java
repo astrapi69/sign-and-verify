@@ -43,6 +43,8 @@ import java.security.PrivateKey;
 @SuperBuilder
 public class SignatureBean
 {
+	/* the {@link PrivateKey} object */
 	PrivateKey privateKey;
+	/* the signature algorithm */
 	String signatureAlgorithm;
 }

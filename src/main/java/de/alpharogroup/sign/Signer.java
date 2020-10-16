@@ -73,7 +73,7 @@ public final class Signer
 	 * Sign the given byte array with the given private key and the appropriate algorithms
 	 *
 	 * @param bytesToSign the bytes to sign
-	 * @return the signed byte array
+	 * @return the signature as byte array
 	 */
 	public synchronized byte[] sign(byte[] bytesToSign)
 	{
