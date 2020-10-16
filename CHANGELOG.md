@@ -4,6 +4,11 @@
 Version 1.1-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update of gradle to new version 6.7
+- javadoc extended and optimized
+
 Version 1
 -------------
 
