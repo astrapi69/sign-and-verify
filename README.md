@@ -36,7 +36,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- sign-and-verify version -->
-		<sign-and-verify.version>1</sign-and-verify.version>
+		<sign-and-verify.version>1.1</sign-and-verify.version>
 			...
 	</properties>
 			...
@@ -58,11 +58,19 @@ You can first define the version in the ext section and add than the following g
 to your project `build.gradle` if you want to import the core functionality:
 
 ```
+define version in file gradle.properties
+
+signAndVerifyVersion=1.1
+
+or in build.gradle ext area
 ext {
 			...
-    signAndVerifyVersion = "1"
+    signAndVerifyVersion = "1.1"
 			...
 }
+
+and add to  
+
 dependencies {
 			...
 implementation("de.alpharogroup:sign-and-verify:$signAndVerifyVersion")
