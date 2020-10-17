@@ -1,8 +1,18 @@
 ## Change log
 ----------------------
 
-Version 1.1-SNAPSHOT
+Version 1.1
 -------------
+
+ADDED: 
+
+- added usage area to the README.md file
+
+CHANGED:
+
+- update of gradle to new version 6.7
+- update of test dependency file-worker to new version 5.7
+- javadoc extended and optimized
 
 Version 1
 -------------

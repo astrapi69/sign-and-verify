@@ -30,11 +30,9 @@ import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.test.objects.NotSerializable;
-import de.alpharogroup.test.objects.Person;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;

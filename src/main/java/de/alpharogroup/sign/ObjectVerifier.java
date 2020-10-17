@@ -60,7 +60,7 @@ public final class ObjectVerifier<T extends Serializable>
 	 * Verify the given serializable object with the given signed encoded signature
 	 *
 	 * @param object the object to verify
-	 * @param signedBytes   the encoded signature
+	 * @param signedBytes   the encoded signature to verify against
 	 * @return true, if successful otherwise false
 	 */
 	public synchronized boolean verify(T object, String signedBytes)

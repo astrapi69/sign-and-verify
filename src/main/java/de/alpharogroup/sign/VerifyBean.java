@@ -44,7 +44,10 @@ import java.security.cert.Certificate;
 @SuperBuilder
 public class VerifyBean
 {
+	/* the {@link Certificate} object */
 	Certificate certificate;
+	/* the {@link PublicKey} object */
 	PublicKey publicKey;
+	/* the signature algorithm */
 	String signatureAlgorithm;
 }

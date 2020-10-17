@@ -24,14 +24,11 @@
  */
 package de.alpharogroup.sign;
 
-import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.verifier.ContractVerifier;
 import de.alpharogroup.file.search.PathFinder;
 import org.junit.jupiter.api.Test;
-import org.meanbean.test.BeanTester;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,16 +37,18 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.spec.InvalidKeySpecException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * The unit test class for the class {@link SignatureBean}
+ */
 class VerifyBeanTest
 {
 
 	/**
 	 * Test method for creation of object {@link VerifyBean}
 	 */
-	@Test
-	public void testObjectCreation()
+	@Test public void testObjectCreation()
 		throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
 		IOException, CertificateEncodingException, InvalidKeyException, SignatureException
 	{
