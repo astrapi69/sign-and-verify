@@ -58,15 +58,15 @@ public final class Signer
 		Objects.requireNonNull(signatureBean.getPrivateKey());
 		Objects.requireNonNull(signatureBean.getSignatureAlgorithm());
 		this.signatureBean = signatureBean;
-		try
-		{
-			this.signature = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
-			this.signature.initSign(this.signatureBean.getPrivateKey());
-		}
-		catch (InvalidKeyException | NoSuchAlgorithmException exception)
-		{
-			throw new RuntimeException(exception);
-		}
+		this.signature = newSignature(this.signatureBean);
+	}
+
+	private Signature newSignature(final SignatureBean signatureBean) {
+		return RuntimeExceptionDecorator.decorate(() -> {
+			Signature signature = Signature.getInstance(signatureBean.getSignatureAlgorithm());
+			signature.initSign(signatureBean.getPrivateKey());
+			return signature;
+		});
 	}
 
 	/**

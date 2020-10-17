@@ -39,7 +39,7 @@ public final class JsonSigner<T>
 {
 
 	/* the signer for sign byte arrays */
-	private final Signer signer;
+	private final ObjectSigner<String> signer;
 
 	/* the gson object for serialization */
 	private final Gson gson;
@@ -53,7 +53,7 @@ public final class JsonSigner<T>
 	public JsonSigner(SignatureBean signatureBean, Gson gson)
 	{
 		Objects.requireNonNull(gson);
-		this.signer = new Signer(signatureBean);
+		this.signer = new ObjectSigner<>(signatureBean);
 		this.gson = gson;
 	}
 
@@ -66,9 +66,8 @@ public final class JsonSigner<T>
 	public synchronized String sign(final T object)
 	{
 		Objects.requireNonNull(object);
-		byte[] signedBytes = this.signer.sign(Serializer.toByteArray(gson.toJson(object, object.getClass())));
-		String encoded = Base64.getEncoder().encodeToString(signedBytes);
-		return encoded;
+		String json = gson.toJson(object, object.getClass());
+		return this.signer.sign(json);
 	}
 
 }

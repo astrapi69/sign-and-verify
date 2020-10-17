@@ -56,9 +56,9 @@ public final class ObjectSigner<T extends Serializable>
 	 */
 	public synchronized String sign(final T object)
 	{
-		byte[] signedBytes = this.signer.sign(Serializer.toByteArray(object));
-		String encoded = Base64.getEncoder().encodeToString(signedBytes);
-		return encoded;
+		byte[] signature = this.signer.sign(Serializer.toByteArray(object));
+		String encodedSignature = Base64.getEncoder().encodeToString(signature);
+		return encodedSignature;
 	}
 
 }
