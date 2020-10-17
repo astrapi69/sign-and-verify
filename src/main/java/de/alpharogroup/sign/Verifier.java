@@ -62,22 +62,22 @@ public final class Verifier
 			throw new IllegalArgumentException("Please provide a public key or certificate");
 		}
 		this.verifyBean = verifyBean;
-		try
-		{
-			this.signature = Signature.getInstance(this.verifyBean.getSignatureAlgorithm());
+		this.signature = newSignature(this.verifyBean);
+	}
+
+	private Signature newSignature(final VerifyBean verifyBean) {
+		return RuntimeExceptionDecorator.decorate(() -> {
+			Signature signature = Signature.getInstance(verifyBean.getSignatureAlgorithm());
 			if (verifyBean.getPublicKey() != null)
 			{
-				signature.initVerify(this.verifyBean.getPublicKey());
+				signature.initVerify(verifyBean.getPublicKey());
 			}
 			else
 			{
-				signature.initVerify(this.verifyBean.getCertificate());
+				signature.initVerify(verifyBean.getCertificate());
 			}
-		}
-		catch (InvalidKeyException | NoSuchAlgorithmException exception)
-		{
-			throw new RuntimeException(exception);
-		}
+			return signature;
+		});
 	}
 
 	/**

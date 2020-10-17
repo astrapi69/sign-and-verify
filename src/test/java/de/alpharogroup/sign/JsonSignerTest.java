@@ -25,11 +25,13 @@
 package de.alpharogroup.sign;
 
 import com.google.gson.Gson;
+import de.alpharogroup.collections.CollectionExtensions;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.test.objects.NotSerializable;
 import org.junit.jupiter.api.Test;
+import org.meanbean.test.BeanTester;
 
 import java.io.File;
 import java.security.PrivateKey;
@@ -67,7 +69,7 @@ class JsonSignerTest
 
 		SignatureBean bean = SignatureBean.builder().privateKey(privateKey)
 			.signatureAlgorithm(signatureAlgorithm).build();
-		signer = new JsonSigner<NotSerializable>(bean, new Gson());
+		signer = new JsonSigner<>(bean, new Gson());
 
 		// new scenario
 		notSerializable = NotSerializable.builder().build();
@@ -81,4 +83,5 @@ class JsonSignerTest
 		expected = "eJA5uNEeQ49Wy34XCjv0p9DbGAq2yEY5kX9nAB3uqx3nktJMsh//Q1Ri+cHtLcRMCKbqHr1TWR1b0JFvVwVUSzdJcFg1diDrVI3VjJPOVVeygOjF1xXFZ0QSwGNiMoUlzLfGkD6Q7BHTC10hzRczn/uxMYDtXZdgZKGvLVDzsWT3HHneR+ZROLJ3jwQtIOntaQbGM6X3YVmRD9Pj/hDbkBhJX0nu6K55H20vYOKfO6PyePZTUfztUZ5ITiAwyjOhGM4tqkFuuQccr57KdRb7ltvRajX3BZa1GAjodVPOWzOUX+obB3ULtwJHqnjZ474cEUA6PqQ28tVkY6x+ZLVfzQ==";
 		assertEquals(actual, expected);
 	}
+
 }

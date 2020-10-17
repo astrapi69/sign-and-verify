@@ -44,7 +44,7 @@ public final class ObjectVerifier<T extends Serializable>
 	/**
 	 * The {@link Verifier} object for the verification
 	 */
-	Verifier verifier;
+	private final Verifier verifier;
 
 	/**
 	 * Instantiates a new {@link ObjectVerifier} object
@@ -60,13 +60,14 @@ public final class ObjectVerifier<T extends Serializable>
 	 * Verify the given serializable object with the given signed encoded signature
 	 *
 	 * @param object the object to verify
-	 * @param signedBytes   the encoded signature to verify against
+	 * @param encodedSignature   the encoded signature to verify against
 	 * @return true, if successful otherwise false
 	 */
-	public synchronized boolean verify(T object, String signedBytes)
+	public synchronized boolean verify(T object, String encodedSignature)
 	{
-		return this.verifier.verify(Serializer.toByteArray(object),
-			Base64.getDecoder().decode(signedBytes));
+		byte[] bytesToVerify = Serializer.toByteArray(object);
+		byte[] decodedSignature = Base64.getDecoder().decode(encodedSignature);
+		return this.verifier.verify(bytesToVerify, decodedSignature);
 	}
 
 }

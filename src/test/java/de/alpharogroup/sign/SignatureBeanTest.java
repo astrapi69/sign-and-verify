@@ -1,8 +1,8 @@
 /**
  * The MIT License
- *
+ * <p>
  * Copyright (C) 2015 Asterios Raptis
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -27,7 +27,12 @@ package de.alpharogroup.sign;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.file.search.PathFinder;
-import org.testng.annotations.Test;
+import de.alpharogroup.throwable.RuntimeExceptionDecorator;
+import org.junit.jupiter.api.Test;
+import org.meanbean.lang.Factory;
+import org.meanbean.test.BeanTester;
+import org.meanbean.test.Configuration;
+import org.meanbean.test.ConfigurationBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,11 +49,12 @@ import static org.testng.Assert.assertNotNull;
 class SignatureBeanTest
 {
 
+	PrivateKey privateKey;
+
 	/**
 	 * Test method for creation of object {@link SignatureBean}
 	 */
-	@Test
-	public void testObjectCreation()
+	@Test public void testObjectCreation()
 		throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
 		IOException
 	{
@@ -70,5 +76,33 @@ class SignatureBeanTest
 		assertNotNull(object);
 		object = new SignatureBean();
 		assertNotNull(object);
+	}
+
+	/**
+	 * Test method for {@link SignatureBean} with {@link BeanTester}
+	 */
+	@Test public void testWithBeanTester()
+	{
+		Configuration configuration = new ConfigurationBuilder()
+			.overrideFactory("privateKey", new Factory<PrivateKey>()
+			{
+				@Override public PrivateKey create()
+				{
+					if (privateKey == null)
+					{
+
+						File privatekeyDerDir = new File(PathFinder.getSrcTestResourcesDir(),
+							"/der");
+						File privatekeyDerFile = new File(privatekeyDerDir, "private.der");
+						privateKey = RuntimeExceptionDecorator
+							.decorate(() -> PrivateKeyReader.readPrivateKey(privatekeyDerFile));
+					}
+
+					return privateKey;
+				}
+			}).build();
+		final BeanTester beanTester = new BeanTester();
+		beanTester.addCustomConfiguration(SignatureBean.class, configuration);
+		beanTester.testBean(SignatureBean.class);
 	}
 }

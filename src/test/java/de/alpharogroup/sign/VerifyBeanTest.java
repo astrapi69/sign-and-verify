@@ -28,10 +28,17 @@ import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.throwable.RuntimeExceptionDecorator;
 import org.junit.jupiter.api.Test;
+import org.meanbean.lang.Factory;
+import org.meanbean.test.BeanTester;
+import org.meanbean.test.Configuration;
+import org.meanbean.test.ConfigurationBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
@@ -40,10 +47,12 @@ import java.security.spec.InvalidKeySpecException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * The unit test class for the class {@link SignatureBean}
+ * The unit test class for the class {@link VerifyBean}
  */
 class VerifyBeanTest
 {
+	Certificate certificate;
+	PublicKey publicKey;
 
 	/**
 	 * Test method for creation of object {@link VerifyBean}
@@ -80,4 +89,58 @@ class VerifyBeanTest
 		assertNotNull(object);
 	}
 
+	/**
+	 * Test method for {@link VerifyBean} with {@link BeanTester}
+	 */
+	@Test public void testWithBeanTester()
+	{
+		Configuration configuration = new ConfigurationBuilder()
+			.overrideFactory("certificate", new Factory<Certificate>()
+			{
+				@Override public Certificate create()
+				{
+					if (certificate == null)
+					{
+						String signatureAlgorithm;
+						File publickeyDerDir;
+						File publickeyDerFile;
+						File privatekeyDerFile;
+						PrivateKey privateKey;
+						PublicKey publicKey;
+
+						publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "/der");
+						publickeyDerFile = new File(publickeyDerDir, "public.der");
+						privatekeyDerFile = new File(publickeyDerDir, "private.der");
+						privateKey = RuntimeExceptionDecorator
+							.decorate(() -> PrivateKeyReader.readPrivateKey(privatekeyDerFile));
+						publicKey = RuntimeExceptionDecorator
+							.decorate(() -> PublicKeyReader.readPublicKey(publickeyDerFile));
+						signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
+						certificate = RuntimeExceptionDecorator
+							.decorate(() -> TestObjectFactory.newCertificateForTests(publicKey, privateKey,
+								signatureAlgorithm));
+					}
+					return certificate;
+				}
+			}).overrideFactory("publicKey", new Factory<PublicKey>()
+			{
+				@Override public PublicKey create()
+				{
+					if (publicKey == null)
+					{
+						File publickeyDerDir;
+						File publickeyDerFile;
+
+						publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "/der");
+						publickeyDerFile = new File(publickeyDerDir, "public.der");
+						publicKey = RuntimeExceptionDecorator
+							.decorate(() -> PublicKeyReader.readPublicKey(publickeyDerFile));
+					}
+					return publicKey;
+				}
+			}).build();
+		final BeanTester beanTester = new BeanTester();
+		beanTester.addCustomConfiguration(VerifyBean.class, configuration);
+		beanTester.testBean(VerifyBean.class);
+	}
 }

@@ -45,7 +45,7 @@ public final class JsonVerifier<T>
 	/**
 	 * The {@link Verifier} object for the verification
 	 */
-	private final Verifier verifier;
+	private final ObjectVerifier<String> verifier;
 
 	/**
 	 * The {@link Gson} object for serialization
@@ -61,7 +61,7 @@ public final class JsonVerifier<T>
 	public JsonVerifier(VerifyBean verifyBean, Gson gson)
 	{
 		Objects.requireNonNull(gson);
-		this.verifier = new Verifier(verifyBean);
+		this.verifier = new ObjectVerifier<>(verifyBean);
 		this.gson = gson;
 	}
 
@@ -74,8 +74,8 @@ public final class JsonVerifier<T>
 	 */
 	public synchronized boolean verify(T object, String signature)
 	{
-		return this.verifier.verify(Serializer.toByteArray(gson.toJson(object, object.getClass())),
-			Base64.getDecoder().decode(signature));
+		String json = gson.toJson(object, object.getClass());
+		return this.verifier.verify(json, signature);
 	}
 
 }

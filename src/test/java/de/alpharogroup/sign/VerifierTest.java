@@ -1,8 +1,8 @@
 /**
  * The MIT License
- *
+ * <p>
  * Copyright (C) 2015 Asterios Raptis
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -24,19 +24,19 @@
  */
 package de.alpharogroup.sign;
 
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.file.search.PathFinder;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
-
-import de.alpharogroup.collections.array.ArrayFactory;
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.file.search.PathFinder;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,8 +53,7 @@ public class VerifierTest
 	 * @throws Exception
 	 *             is thrown if any security exception occured
 	 */
-	@Test
-	public void testVerifyWithCertificate() throws Exception
+	@Test public void testVerifyWithCertificate() throws Exception
 	{
 		boolean actual;
 		boolean expected;
@@ -79,8 +78,8 @@ public class VerifierTest
 		charset = StandardCharsets.UTF_8;
 		valueBytes = "foo".getBytes(charset);
 
-		certificate = TestObjectFactory.newCertificateForTests(publicKey, privateKey,
-			signatureAlgorithm);
+		certificate = TestObjectFactory
+			.newCertificateForTests(publicKey, privateKey, signatureAlgorithm);
 
 		VerifyBean verifyBean = VerifyBean.builder().certificate(certificate)
 			.signatureAlgorithm(signatureAlgorithm).build();
@@ -98,8 +97,7 @@ public class VerifierTest
 	 * @throws Exception
 	 *             is thrown if any security exception occured
 	 */
-	@Test
-	public void testVerifyWithPublicKey() throws Exception
+	@Test public void testVerifyWithPublicKey() throws Exception
 	{
 		boolean actual;
 		boolean expected;
@@ -129,4 +127,14 @@ public class VerifierTest
 		assertEquals(actual, expected);
 	}
 
+	/**
+	 * Test method for {@link Verifier#verify(byte[], byte[])} with the public key
+	 */
+	@Test public void testObjectCreationWithInvalidVerifyBean()
+	{
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			new Verifier(VerifyBean.builder()
+				.signatureAlgorithm(CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm()).build());
+		});
+	}
 }
