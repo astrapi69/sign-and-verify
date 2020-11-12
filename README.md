@@ -36,7 +36,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- sign-and-verify version -->
-		<sign-and-verify.version>1.1</sign-and-verify.version>
+		<sign-and-verify.version>1.2</sign-and-verify.version>
 			...
 	</properties>
 			...
@@ -60,12 +60,12 @@ to your project `build.gradle` if you want to import the core functionality:
 ```
 define version in file gradle.properties
 
-signAndVerifyVersion=1.1
+signAndVerifyVersion=1.2
 
 or in build.gradle ext area
 ext {
 			...
-    signAndVerifyVersion = "1.1"
+    signAndVerifyVersion = "1.2"
 			...
 }
 
