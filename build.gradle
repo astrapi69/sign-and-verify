@@ -37,6 +37,7 @@ dependencies {
     implementation("de.alpharogroup:throw-able:$throwAbleVersion")
     implementation("com.google.code.gson:gson:$gsonVersion")
     testImplementation("de.alpharogroup:randomizer-core:$randomizerVersion")
+    testImplementation("de.alpharogroup:crypt-api:$cryptApiVersion")
     testImplementation("de.alpharogroup:crypt-data:$cryptDataVersion")
     testImplementation("de.alpharogroup:file-worker:$fileWorkerVersion")
     testImplementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")

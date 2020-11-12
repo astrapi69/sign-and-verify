@@ -9,6 +9,7 @@ ADDED:
 - added new annotation class SignatureExclude for fields that have to be excluded from the signing and verifying process
 - added new factory method in Signer for create the signature that decorates checked exceptions to runtime exceptions
 - added new factory method in Verifier for create the signature that decorates checked exceptions to runtime exceptions
+- added new test dependency crypt-api in version 7.3
 
 CHANGED:
 

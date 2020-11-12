@@ -25,10 +25,7 @@
 package de.alpharogroup.sign;
 
 import com.google.gson.Gson;
-import de.alpharogroup.io.Serializer;
 
-import java.io.Serializable;
-import java.util.Base64;
 import java.util.Objects;
 
 /**

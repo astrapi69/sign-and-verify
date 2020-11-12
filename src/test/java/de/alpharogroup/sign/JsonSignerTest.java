@@ -25,13 +25,11 @@
 package de.alpharogroup.sign;
 
 import com.google.gson.Gson;
-import de.alpharogroup.collections.CollectionExtensions;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.test.objects.NotSerializable;
 import org.junit.jupiter.api.Test;
-import org.meanbean.test.BeanTester;
 
 import java.io.File;
 import java.security.PrivateKey;

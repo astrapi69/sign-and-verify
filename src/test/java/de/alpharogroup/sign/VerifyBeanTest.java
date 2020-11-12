@@ -37,9 +37,12 @@ import org.meanbean.test.ConfigurationBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.spec.InvalidKeySpecException;
@@ -115,10 +118,10 @@ class VerifyBeanTest
 							.decorate(() -> PrivateKeyReader.readPrivateKey(privatekeyDerFile));
 						publicKey = RuntimeExceptionDecorator
 							.decorate(() -> PublicKeyReader.readPublicKey(publickeyDerFile));
-						signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
-						certificate = RuntimeExceptionDecorator
-							.decorate(() -> TestObjectFactory.newCertificateForTests(publicKey, privateKey,
-								signatureAlgorithm));
+						signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA
+							.getAlgorithm(); // SHA256withRSA
+						certificate = RuntimeExceptionDecorator.decorate(() -> TestObjectFactory
+							.newCertificateForTests(publicKey, privateKey, signatureAlgorithm));
 					}
 					return certificate;
 				}

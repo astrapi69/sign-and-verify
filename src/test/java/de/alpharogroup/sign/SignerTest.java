@@ -24,17 +24,17 @@
  */
 package de.alpharogroup.sign;
 
-import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.PrivateKey;
-
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.PrivateKey;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * The unit test class for the class {@link Signer}

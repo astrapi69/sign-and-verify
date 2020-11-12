@@ -25,14 +25,9 @@
 package de.alpharogroup.sign;
 
 import de.alpharogroup.io.Serializer;
-import de.alpharogroup.throwable.RuntimeExceptionDecorator;
 
 import java.io.Serializable;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
 import java.util.Base64;
-import java.util.Objects;
 
 /**
  * The class {@link ObjectVerifier} provides an algorithm for java serializable objects with given
