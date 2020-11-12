@@ -65,7 +65,7 @@ public final class Verifier
 		this.signature = newSignature(this.verifyBean);
 	}
 
-	private Signature newSignature(final VerifyBean verifyBean) {
+	protected Signature newSignature(final VerifyBean verifyBean) {
 		return RuntimeExceptionDecorator.decorate(() -> {
 			Signature signature = Signature.getInstance(verifyBean.getSignatureAlgorithm());
 			if (verifyBean.getPublicKey() != null)

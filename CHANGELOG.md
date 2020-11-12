@@ -4,6 +4,22 @@
 Version 1.2-SNAPSHOT
 -------------
 
+ADDED: 
+
+- added new annotation class SignatureExclude for fields that have to be excluded from the signing and verifying process
+- added new factory method in Signer for create the signature that decorates checked exceptions to runtime exceptions
+- added new factory method in Verifier for create the signature that decorates checked exceptions to runtime exceptions
+
+CHANGED:
+
+- increase code coverage
+- optimized of JsonSigner and JsonVerifier for debugging issues
+- optimized of ObjectSigner and ObjectVerifier for debugging issues
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.36.0
+- update of dependency lombok in new version 1.18.16
+- update of test dependency crypt-data to new version 7.4
+- update of test dependency silly-collections to new version 8.4
+
 Version 1.1
 -------------
 

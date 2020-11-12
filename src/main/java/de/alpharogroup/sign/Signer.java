@@ -61,7 +61,7 @@ public final class Signer
 		this.signature = newSignature(this.signatureBean);
 	}
 
-	private Signature newSignature(final SignatureBean signatureBean) {
+	protected Signature newSignature(final SignatureBean signatureBean) {
 		return RuntimeExceptionDecorator.decorate(() -> {
 			Signature signature = Signature.getInstance(signatureBean.getSignatureAlgorithm());
 			signature.initSign(signatureBean.getPrivateKey());
